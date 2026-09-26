@@ -1,0 +1,76 @@
+{
+  "corruptions": [
+    {
+      "type": "drop_latest_20_percent",
+      "rows": [
+        {
+          "index": 0,
+          "paper_id": "10.1145/3637528.3671812"
+        },
+        {
+          "index": 1,
+          "paper_id": "10.1145/3637528.3671808"
+        },
+        {
+          "index": 2,
+          "paper_id": "10.1145/3637528.3671804"
+        },
+        {
+          "index": 3,
+          "paper_id": "10.1145/3637528.3671807"
+        }
+      ]
+    },
+    {
+      "type": "blank_summary",
+      "rows": [
+        {
+          "index": 4,
+          "old": "Silent data corruption in RAG pipelines degrades LLM answer faithfulness without throwing runtime errors. We introduce automated quality gates using Great Expectations 1.x to catch stale and malformed embeddings before serving.",
+          "new": ""
+        }
+      ]
+    },
+    {
+      "type": "summary_noise",
+      "rows": [
+        {
+          "index": 5,
+          "old": "An extended empirical study on tatic benchmarks fail to capture domain drift in enterprise knowledge bases. We establish a synthetic test generator that auto-creates paired evaluation sets whenever new corpora are ingested Further analysis on scaling parameters.",
+          "new": "An extended empirical study on tatic benchmarks fail to capture domain drift in enterprise knowledge bases. We establish a synthetic test generator that auto-creates paired evaluation sets whenever new corpora are ingested Further analysis on scaling parameters. [CORRUPTED_NOISE_@@@]"
+        }
+      ]
+    },
+    {
+      "type": "truncate_title_under_8",
+      "rows": [
+        {
+          "index": 4,
+          "old": "Data Observability and Quality Gates for Production RAG Systems",
+          "new": "Data Ob"
+        }
+      ]
+    },
+    {
+      "type": "date_shift_back_365_days",
+      "rows": [
+        {
+          "index": 4,
+          "old": "2026-06-12",
+          "new": "2025-06-12"
+        }
+      ]
+    },
+    {
+      "type": "duplicate_row",
+      "rows": [
+        {
+          "source_index": 4,
+          "paper_id": "10.1145/3637528.3671802"
+        }
+      ]
+    }
+  ],
+  "input_rows": 24,
+  "output_rows": 21
+}

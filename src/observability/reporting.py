@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from core.utils import write_text
+
 
 def generate_phase1_report(
     report_path,
@@ -18,7 +20,37 @@ def generate_phase1_report(
     3. In data quality va freshness.
     4. Ghi markdown vao report_path.
     """
-    raise NotImplementedError("Student task: implement phase 1 report.")
+    lines = [
+        "# Phase 1 Baseline Report",
+        "",
+        "## Source and data",
+        "",
+        "| Metric | Value |",
+        "|---|---:|",
+        f"| Source | {source_summary.get('source', '')} |",
+        f"| Ingested records | {source_summary.get('records', 0)} |",
+        f"| Clean rows | {source_summary.get('clean_rows', 0)} |",
+        f"| Test questions | {source_summary.get('test_questions', 0)} |",
+        "",
+        "## Baseline metrics",
+        "",
+        "| Metric | Value |",
+        "|---|---:|",
+        f"| Retrieval Hit Rate | {metrics.get('retrieval_hit_rate', 0.0):.4f} |",
+        f"| Mean Token F1 | {metrics.get('mean_token_f1', 0.0):.4f} |",
+        f"| Judge Accuracy | {metrics.get('judge_accuracy', 0.0):.4f} |",
+        f"| Mean Judge Score | {metrics.get('mean_judge_score', 0.0):.4f} |",
+        "",
+        "## Quality gate",
+        "",
+        f"- Success: `{quality.get('success', False)}`",
+        f"- Expectations: `{len(quality.get('expectations', []))}`",
+        f"- Freshness: `{freshness.get('is_fresh', False)}`",
+        f"- Stale rows: `{freshness.get('stale_rows', 0)}` / `{freshness.get('total_rows', 0)}`",
+        f"- Stale ratio: `{freshness.get('stale_ratio', 0.0):.4f}`",
+        "",
+    ]
+    write_text(report_path, "\n".join(lines))
 
 
 def generate_corruption_report(
@@ -32,4 +64,37 @@ def generate_corruption_report(
     repaired_freshness: dict[str, Any],
 ) -> None:
     """TODO(student): viet markdown report so sanh baseline/corrupted/repaired."""
-    raise NotImplementedError("Student task: implement corruption comparison report.")
+    metric_names = (
+        ("Retrieval Hit Rate", "retrieval_hit_rate"),
+        ("Mean Token F1", "mean_token_f1"),
+        ("Judge Accuracy", "judge_accuracy"),
+        ("Mean Judge Score", "mean_judge_score"),
+    )
+    lines = [
+        "# Corruption and Repair Report",
+        "",
+        "## Baseline vs Corrupted vs Repaired",
+        "",
+        "| Metric | Baseline | Corrupted | Repaired |",
+        "|---|---:|---:|---:|",
+    ]
+    for label, key in metric_names:
+        lines.append(
+            f"| {label} | {baseline_metrics.get(key, 0.0):.4f} | "
+            f"{corrupted_metrics.get(key, 0.0):.4f} | {repaired_metrics.get(key, 0.0):.4f} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Quality and freshness",
+            "",
+            "| Signal | Corrupted | Repaired |",
+            "|---|---:|---:|",
+            f"| Quality gate | {corrupted_quality.get('success', False)} | {repaired_quality.get('success', False)} |",
+            f"| Freshness | {corrupted_freshness.get('is_fresh', False)} | {repaired_freshness.get('is_fresh', False)} |",
+            f"| Stale ratio | {corrupted_freshness.get('stale_ratio', 0.0):.4f} | {repaired_freshness.get('stale_ratio', 0.0):.4f} |",
+            "",
+            "Metrics above are measured from each corresponding index and evaluation run.",
+        ]
+    )
+    write_text(report_path, "\n".join(lines))
